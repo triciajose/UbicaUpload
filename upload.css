@@ -1,0 +1,88 @@
+body {
+	vertical-align: middle;
+	background-color: #3399FF !important;
+
+}
+
+#logo {
+	max-width: 200px;
+}
+
+h2 {
+	font-family: 'Lato', sans-serif;
+	color: white;
+	font-size: 300%;
+	text-align: center;
+}
+
+#form{
+	font-family: 'Lato', sans-serif;
+	color: black;
+	text-align: center;
+	font-size: 130%;
+	background-position: center;
+/*	background-color: white;*/
+	width: 75%;
+	height: 150px;
+	margin: 0px auto;
+}
+
+#form .actual {
+	display:none;
+}
+
+#confirmation {
+	display: none;
+}
+
+.uploadb {
+	background-color:#44c767;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #18ab29;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2f6627;
+}
+.uploadb:hover {
+	background-color:#5cbf2a;
+}
+.uploadb:active {
+	position:relative;
+	top:1px;
+}
+
+#txtFileName {
+	padding: 16px 31px;
+	width: 30%;
+}
+
+.choose {
+	background-color:#e38c5d;
+	-moz-border-radius:28px;
+	-webkit-border-radius:28px;
+	border-radius:28px;
+	border:1px solid #566963;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:arial;
+	font-size:17px;
+	padding:16px 31px;
+	text-decoration:none;
+	text-shadow:0px 1px 0px #2b665e;
+}
+.choose:hover {
+	background-color:#eb675e;
+}
+.choose:active {
+	position:relative;
+	top:1px;
+}
+
