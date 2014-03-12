@@ -44,7 +44,7 @@
 
 			if ($result) {
 				$version = $result + 1;
-      			mysqli_query($con, "UPDATE Files SET Version=$version AND Date Modified='$time' WHERE Name='$name'");
+      			mysqli_query($con, "UPDATE Files SET Version='$version' AND Date Modified='$time' WHERE Name='$name'");
 
 			}
 			else {
