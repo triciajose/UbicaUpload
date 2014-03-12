@@ -39,18 +39,18 @@
 			$name = $_FILES["file"]["name"];
 			$time = date("Y-m-d", time());
 			move_uploaded_file($_FILES["file"]["tmp_name"], "files/" . $name);
-			// $result = mysqli_query($con, "SELECT $version FROM Files WHERE Name='$name'");
-      		mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('test', '1992-03-23', '0')");
+			$result = mysqli_query($con, "SELECT $version FROM Files WHERE Name='$name'");
+      		// mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('test', '1992-03-23', '0')");
 
-			// if ($result) {
-			// 	$version = $result + 1;
-   //    			mysqli_query($con, "UPDATE Files SET Version=$version AND Date Modified='$time' WHERE Name='$name'");
+			if ($result) {
+				$version = $result + 1;
+      			mysqli_query($con, "UPDATE Files SET Version=$version AND Date Modified='$time' WHERE Name='$name'");
 
-			// }
-			// else {
-			// 	$version = 0;
-   //    			mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('$name', '$time', '$version')");
-			// }
+			}
+			else {
+				$version = 0;
+      			mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('$name', '$time', '$version')");
+			}
       		echo "<div id='confirmation'><p>Upload complete</p></div>";
 		}
 	}
