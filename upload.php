@@ -24,32 +24,35 @@
 </form>
 
 <?php
-	$con = mysqli_connect("localhost","root","password","ubica");
-	if (mysqli_connect_errno()) {
-    	die('Could not connect: ' . mysqli_connect_error());
+	$mysqli = new mysqli("localhost","root","password","ubica");
+	if ($mysqli->connect_errno) {
+	    printf("Connect failed: %s\n", $mysqli->connect_error);
+	    exit();
 	}
 	$allowedExts = array("pdf");
 	$temp = explode(".", $_FILES["file"]["name"]);
 	$extension = end($temp);
+
 	if ($_FILES["file"]["type"] == "application/pdf") {
 		if ($_FILES["file"]["error"] > 0) {
 		    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
 		    }
 		else {
-			$name = $_FILES["file"]["name"];
-			$time = date("Y-m-d", time());
+			$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
 			move_uploaded_file($_FILES["file"]["tmp_name"], "files/" . $name);
-			$result = mysqli_query($con, "SELECT $version FROM Files WHERE Name='$name'");
-      		// mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('test', '1992-03-23', '0')");
 
-			if ($result) {
+			$current = "SELECT 'Version' FROM files WHERE Name='$name'";
+			$result = mysqli_query($mysqli,$current);
+
+			if (mysqli_num_rows($result) != 0) {
 				$version = $result + 1;
-      			mysqli_query($con, "UPDATE Files SET Version='$version' AND Date Modified='$time' WHERE Name='$name'");
-
+      			$sql = "UPDATE Files SET Version='$version' AND DateModified =CURRENT_TIMESTAMP WHERE Name='$name'";
+      			mysqli_query($mysqli,$sql);
+      			mysqli_free_result($result);
 			}
 			else {
-				$version = 0;
-      			mysqli_query($con, "INSERT INTO Files (Name, Date Modifed, Version) VALUES ('$name', '$time', '$version')");
+				$sql="INSERT INTO files (Name, Version, DateModified) VALUES ('$name', '0', CURRENT_TIMESTAMP)";
+				mysqli_query($mysqli,$sql);
 			}
       		echo "<div id='confirmation'><p>Upload complete</p></div>";
 		}
@@ -58,7 +61,7 @@
 		    echo "<div id='confirmation'><p>Invalid file</p></div>";
 
 	}    
-	mysqli_close($con);
+	$mysqli->close();
 
     
 ?>
