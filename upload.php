@@ -15,7 +15,7 @@
 <form action="upload.php" method="post" enctype="multipart/form-data">
 	<label class="choose" for="file">Select a file to upload</label>
 	<!-- <br/> -->
-	<input class = "actual" type="file" name="file" id="file" onchange="CopyMe(this, 'txtFileName');">
+	<input class ="actual" type="file" name="file" id="file" onchange="CopyMe(this, 'txtFileName');">
 	<!-- <br/> -->
 	<input id="txtFileName" type="text" readonly="readonly" />
 	<br/>
@@ -35,18 +35,18 @@
 
 	if ($_FILES["file"]["type"] == "application/pdf") {
 		if ($_FILES["file"]["error"] > 0) {
-		    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+		    echo "Return Co0de: " . $_FILES["file"]["error"] . "<br>";
 		    }
 		else {
 			$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
 			move_uploaded_file($_FILES["file"]["tmp_name"], "files/" . $name);
 
-			$current = "SELECT 'Version' FROM files WHERE Name='$name'";
+			$current = "SELECT Version FROM files WHERE Name='$name'";
 			$result = mysqli_query($mysqli,$current);
-
+			$row = mysqli_fetch_row($result);
 			if (mysqli_num_rows($result) != 0) {
-				$version = $result + 1;
-      			$sql = "UPDATE Files SET Version='$version' AND DateModified =CURRENT_TIMESTAMP WHERE Name='$name'";
+				$version = $row[0] + 1;
+      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name'";
       			mysqli_query($mysqli,$sql);
       			mysqli_free_result($result);
 			}
