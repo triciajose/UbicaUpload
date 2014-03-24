@@ -15,6 +15,13 @@ h2 {
 	text-align: center;
 }
 
+h3 {
+	font-family: 'Lato', sans-serif;
+	color: black;
+	font-size: 100%;
+	/*text-align: center;*/
+}
+
 #form{
 	font-family: 'Lato', sans-serif;
 	color: black;
@@ -97,14 +104,6 @@ h2 {
 .text {
 	padding:10px 10px;
 }
-
-#login {
-	width: 25%;
-	height: 150px;
-	margin: 0px auto;
-	text-align: center;
-	background-position: center;
-	}
 
 .sticky {  
     position: fixed;  

@@ -21,6 +21,9 @@
     	$username = $mysqli->real_escape_string($_POST["username"]);
     	$password = $mysqli->real_escape_string($_POST["password"]);
 
+        $new = "INSERT INTO admin (email, password) VALUES ('$username', '$password') ";
+        mysqli_query($mysqli,$new);
+
     	$current = "SELECT uid FROM admin WHERE email='$username' AND password='$password'";
     	$result = mysqli_query($mysqli,$current);
 
@@ -31,7 +34,7 @@
     		
     	}
     	else {
-    		header("Location: index.php?error=yes");
+    		header("Location: index.php?error=old");
     	}
     mysqli_free_result($result);
 	$mysqli->close();

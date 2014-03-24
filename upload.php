@@ -18,7 +18,7 @@
   <script src="foundation-5.2.1/js/foundation.min.js"></script>
 <!-- <img id="logo" src="logo.gif"> -->
 <div id="topbar">
-    <!-- <img src="htt p://www.magic.ubc.ca/wiki/pub/skins/magic.png" /> -->
+    <img src="http://www.magic.ubc.ca/wiki/pub/skins/magic.png" />
     </div>
     
    
@@ -152,8 +152,6 @@
 </div>
 
 <hr />
-
-
 
 </body>
 </html>

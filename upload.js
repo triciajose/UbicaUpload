@@ -16,3 +16,7 @@ function Report(value) {
 		$('#hidden').hide();
 	}
 }
+
+function Error() {
+	$('#error').css("display", "inline");
+}

@@ -30,8 +30,26 @@
     <br />
     <h2> UbiCA One-Way DropBox </h2>
     <div class="row">
-    <div data-alert id="error"class="alert-box warning" style="display:none">
+    <?php 
+      $error = $_GET['error'];
+      if ($error == 'yes') {
+    ?>
+    <script type="text/javascript">
+      $('#error').css("display", "inline");
+    </script> 
+    <?php } 
+      if ($error == 'old') {
+    ?>
+    <script type="text/javascript">
+      $('#old').css("display", "inline");
+    </script> 
+    <?php }  ?>
+
+    <div data-alert id="error" class="alert-box warning" style="display:none">
       Either your email or password is incorrect 
+    </div>
+    <div data-alert id="old" class="alert-box warning" style="display:none">
+      There is someone already registered with that email or password 
     </div>
     <div class="large-5 columns panel">
       <div id="login">
