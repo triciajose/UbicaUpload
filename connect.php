@@ -1,5 +1,5 @@
 <?php
-	$mysqli = new mysqli("localhost","root","password","ubica");
+	$mysqli = new mysqli("localhost","dawood","1234dawood","ubica");
 	$current = "SELECT * FROM files";
 	$result = mysqli_query($mysqli,$current);
 	while($row=mysqli_fetch_assoc($result)) {

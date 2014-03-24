@@ -6,10 +6,10 @@
 <body>
 <?php
 
-	$host = "localhost";
-	$user = "root";
-	$pass = "password";
-	$directory = "ubica";
+                    $host = "localhost";
+                    $user = "dawood";
+                    $pass = "1234dawood";
+                    $directory = "ubica";
 
 	$mysqli = new mysqli($host, $user, $pass, $directory);
 	if ($mysqli->connect_errno) {
