@@ -7,3 +7,12 @@ function Submit() {
 	$('#confirmation').css("display", "inline");
 
 }
+
+function Report(value) {
+	if (value == "New Folder") {
+		$('#hidden').show();
+	}
+	else {
+		$('#hidden').hide();
+	}
+}

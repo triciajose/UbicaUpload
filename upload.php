@@ -4,26 +4,86 @@
 	<meta charset="utf-8" />
 	    <title>Docshare</title>
 	    <link rel="stylesheet" type="css" href="upload.css">
+	    <link rel="stylesheet" type="css" href="foundation-5.2.1/css/foundation.css">
+      	<link rel="stylesheet" type="css" href="foundation-5.2.1/css/normalize.css">
+
 		<link href="http://fonts.googleapis.com/css?family=Lato:300|Grand+Hotel" rel="stylesheet" type="text/css" />
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 		<script type="text/javascript" src="upload.js"></script>
 </head>
 <body>
-<img id="logo" src="logo.gif">
-<h2>Upload a document</h2>
-<div id="form">
-<form action="upload.php" method="post" enctype="multipart/form-data">
-	<label class="choose" for="file">Select a file to upload</label>
-	<!-- <br/> -->
-	<input class ="actual" type="file" name="file" id="file" onchange="CopyMe(this, 'txtFileName');">
-	<!-- <br/> -->
-	<input id="txtFileName" type="text" readonly="readonly" />
-	<br/>
-	<br/>	
-	<input class= "uploadb" type="submit" name="submit" value="Upload" onclick="Submit();">
-</form>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <script src="upload.js"></script>
+  <script src="foundation-5.2.1/js/vendor/jquery.js"></script>
+  <script src="foundation-5.2.1/js/foundation.min.js"></script>
+<!-- <img id="logo" src="logo.gif"> -->
+<div id="topbar">
+    <!-- <img src="htt p://www.magic.ubc.ca/wiki/pub/skins/magic.png" /> -->
+    </div>
+    
+   
+        <br/>
+    <br />
+    <br />
+    <br />
+    <h2> UbiCA One-Way DropBox </h2>
 
-<?php
+<hr />
+<div class="row">
+<div id="form">
+	<div class="row">
+		<form action="upload.php?uid= <?php echo $_GET['uid']; ?>" method="post" enctype="multipart/form-data">
+			<div class="large-5 columns">
+				<input type="file" name="file" id="file">
+			<label for="where">Upload to</label>
+			<select name ="folders" id="folders" onchange="Report(this.value)">
+				<option default>--Select a folder--</option>
+				<?php
+					$host = "localhost";
+					$user = "root";
+					$pass = "password";
+					$directory = "ubica";
+
+					$mysqli = new mysqli($host, $user, $pass, $directory);
+
+					$uid = $_GET['uid'];
+				    $current = "SELECT folder FROM folders WHERE uid='$uid'";
+				   	$result = mysqli_query($mysqli,$current);
+
+					while ($row = mysqli_fetch_row($result)){
+				?>
+				    <option value="<?php echo $row[0]; ?>">
+				    <?php echo $row[0];         ?>     
+				    </option>
+				<?php    
+				}
+				// echo "</select>";
+				?>
+				<option value="New Folder"> New Folder </option>
+			</select>
+			</div>
+			<div id="hidden" style="display:none">
+				<br />
+				<br />
+				<br />
+				<div class="row">
+					<div class="large-3 columns">
+					     <input class="text" name="new" type="text" placeholder="Folder name">
+					</div>
+					<div class="large-3 columns">
+					     <input class="text" name="whisper" type="password" placeholder="Password">
+					</div>
+				</div>
+			</div>
+	</div>
+
+	<br />
+
+	<div class="row">
+	<div class="large-12 columns">
+	<input class= "uploadb" type="submit" name="submit" value="Upload" onclick="Submit();">
+
+	<?php
 	$mysqli = new mysqli("localhost","root","password","ubica");
 	if ($mysqli->connect_errno) {
 	    printf("Connect failed: %s\n", $mysqli->connect_error);
@@ -38,10 +98,30 @@
 			    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
 			    }
 			else {
-				$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
-				move_uploaded_file($_FILES["file"]["tmp_name"], "files/" . $name);
+				$folder = $_POST["folders"];
+				if ($folder == 'New Folder') {
+					$newpass = $mysqli->real_escape_string($_POST["whisper"]);
+					$folder = $mysqli->real_escape_string($_POST["new"]);
 
-				$current = "SELECT Version FROM files WHERE Name='$name'";
+					$create = "CREATE TABLE $folder (
+						Name VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY,
+						Version INT(11) NOT NULL DEFAULT 0,
+						DateModified timestamp DEFAULT CURRENT_TIMESTAMP)";
+						
+					mysqli_query($mysqli,$create);
+
+					$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
+					mysqli_query($mysqli, $insert);
+				}
+				$folder = $mysqli->real_escape_string($folder);
+				$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
+				if (!file_exists($folder)) {
+				    mkdir($folder);
+				}
+
+				move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
+
+				$current = "SELECT Version FROM $folder WHERE Name='$name'";
 				$result = mysqli_query($mysqli,$current);
 				$row = mysqli_fetch_row($result);
 				if (mysqli_num_rows($result) != 0) {
@@ -51,7 +131,7 @@
 	      			mysqli_free_result($result);
 				}
 				else {
-					$sql="INSERT INTO files (Name, Version, DateModified) VALUES ('$name', '0', CURRENT_TIMESTAMP)";
+					$sql="INSERT INTO $folder (Name, Version, DateModified) VALUES ('$name', '0', CURRENT_TIMESTAMP)";
 					mysqli_query($mysqli,$sql);
 				}
 	      		echo "<div id='confirmation'><p>Upload complete</p></div>";
@@ -65,6 +145,15 @@
 
 	$mysqli->close();
 ?>
+	</div>
+	</div>
+</form>
+</div>
+</div>
+
+<hr />
+
+
 
 </body>
 </html>

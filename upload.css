@@ -1,6 +1,6 @@
 body {
-	vertical-align: middle;
-	background-color: #3399FF !important;
+	/*vertical-align: middle;*/
+	/*background-color: #3399FF !important;*/
 
 }
 
@@ -10,7 +10,7 @@ body {
 
 h2 {
 	font-family: 'Lato', sans-serif;
-	color: white;
+	color: black;
 	font-size: 300%;
 	text-align: center;
 }
@@ -18,11 +18,11 @@ h2 {
 #form{
 	font-family: 'Lato', sans-serif;
 	color: black;
-	text-align: center;
+	text-align: left;
 	font-size: 130%;
 	background-position: center;
-/*	background-color: white;*/
-	width: 75%;
+/*	background-color: white;
+*/	width: 75%;
 	height: 150px;
 	margin: 0px auto;
 }
@@ -31,10 +31,18 @@ h2 {
 	display:none;
 }
 
-#confirmation {
-	display: none;
-}
+#form select {
+   width: 268px;
+   padding: 5px;
+   font-size: 16px;
+   line-height: 1;
+   height: 34px;
+   }
 
+#confirmation {
+	display: ;
+}
+/*
 .uploadb {
 	background-color:#44c767;
 	-moz-border-radius:28px;
@@ -56,13 +64,13 @@ h2 {
 .uploadb:active {
 	position:relative;
 	top:1px;
-}
+}*/
 
 #txtFileName {
-	padding: 16px 31px;
+	padding: 16px 16px;
 	width: 30%;
 }
-
+/*
 .choose {
 	background-color:#e38c5d;
 	-moz-border-radius:28px;
@@ -84,5 +92,29 @@ h2 {
 .choose:active {
 	position:relative;
 	top:1px;
+}*/
+
+.text {
+	padding:10px 10px;
 }
 
+#login {
+	width: 25%;
+	height: 150px;
+	margin: 0px auto;
+	text-align: center;
+	background-position: center;
+	}
+
+.sticky {  
+    position: fixed;  
+    width: 100%;  
+    left: 0;  
+    top: 0;  
+    z-index: 100;  
+    border-top: 0;  
+}  
+
+.icons img {
+	max-width: 30px;
+}
