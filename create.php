@@ -10,15 +10,18 @@
 	$admin = "CREATE TABLE admin (
 		uid INT(11) NOT NULL AUTO_INCREMENT PRIMARY KEY UNIQUE,
 		email VARCHAR(255) NOT NULL UNIQUE,
-		password VARCHAR(244) NOT NULL))"
+		password VARCHAR(255) NOT NULL
+		)";
 
-	$folders = "CREATE TABLE admin (
+	$folders = "CREATE TABLE folders (
 		uid INT(11),
-		key VARCHAR(255) NOT NULL PRIMARY KEY UNIQUE,
-		folder VARCHAR(244) NOT NULL UNIQUE))"
+		passkey VARCHAR(255) NOT NULL PRIMARY KEY UNIQUE,
+		folder VARCHAR(255) NOT NULL UNIQUE
+		)";	
 
-	mysqli_query($mysqli,$admin);
-	mysqli_query($mysqli,$folders);
+	if (mysqli_query($mysqli,$admin) && mysqli_query($mysqli,$folders)) {
+		echo "Success";
+	}
 
 
 
