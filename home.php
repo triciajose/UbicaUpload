@@ -7,8 +7,8 @@
 <?php
 
 	$host = "localhost";
-	$user = "dawood";
-	$pass = "1234dawood";
+	$user = "root";
+	$pass = "password";
 	$directory = "ubica";
 
 	$mysqli = new mysqli($host, $user, $pass, $directory);
@@ -18,10 +18,9 @@
 	}
     if(isset($_POST)) {
     	// CHECK USER PERMS
-    	$username = $mysqli->real_escape_string($_POST["username"]);
     	$password = $mysqli->real_escape_string($_POST["password"]);
 
-    	$current = "SELECT uid FROM admin WHERE email='$username' AND password='$password'";
+    	$current = "SELECT uid FROM admin WHERE password='$password'";
     	$result = mysqli_query($mysqli,$current);
 
     	if (mysqli_num_rows($result) != 0) {

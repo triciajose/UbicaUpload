@@ -19,36 +19,37 @@
       $(document).foundation();
 
     </script>
-
+     <div class="topbar">
+     <br/>
+    <img src="newlogo.gif" />
+    </div>
+    
+   
         <br/>
     <br />
     <br />
     <br />
+    <h2> Register </h2>
     <div class="row">
     <div data-alert id="error"class="alert-box warning" style="display:none">
       Either your email or password is incorrect 
     </div>
       <div id="login">
-        <form action="home.php" method="post" enctype="multipart/form-data">
+        <!-- <h3> Register </h3> -->
+        <form action="register.php" method="post" enctype="multipart/form-data">
           <br/>
-            <img src="newlogo.gif" />    
-            <br />
-            <br />
-<!--           <div class="row">
+          <div class="row">
                 <input type="text" name="username" placeholder="Email address" />
-          </div> -->
+          </div>
           <div class="row">
                 <input type="password" name="password" placeholder="Passkey" />
           </div>
-          <br />
           <div class="row">
-          <br />
-            <input type="submit" class="choose" name="submit" value="Go!">
-            or <a href="new.php">      Register a new account</a>
-
+            <input type="submit" class="choose" name="register" value="Sign up!">
           </div>
         </form>
-        </div>
+        
+      </div>
 
     </div>
 

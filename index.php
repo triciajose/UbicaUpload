@@ -56,9 +56,9 @@
         <h3> Login </h3>
         <form action="home.php" method="post" enctype="multipart/form-data">
           <br/>
-          <div class="row">
+<!--           <div class="row">
                 <input type="text" name="username" placeholder="Email address" />
-          </div>
+          </div> -->
           <div class="row">
                 <input type="password" name="password" placeholder="Password" />
           </div>
