@@ -42,11 +42,11 @@
 
 <br />
 <br />
-<div class="row">
+<!-- <div class="row"> -->
 <div id="form">
 	<div class="row">
 		<form action="upload.php?uid= <?php echo $_GET['uid']; ?>" method="post" enctype="multipart/form-data">
-			<div class="large-5 columns">
+			<div class="large-4 columns">
 			<label for="where">Upload to</label>
 			<select name ="folders" id="folders" onchange="Report(this.value)">
 				<option default>--Select a folder--</option>
@@ -69,10 +69,15 @@
 				<option value="New Folder"> New Folder </option>
 			</select>
 			</div>
-			<div class="large-5 columns">
+			<div class="large-3 columns">
 				<br />
-				<!-- <br /> -->
-				<input type="file" name="file" id="file">
+				<!-- <input type="file" name="file" id="file"> -->
+				<label class="choose" id="labelfile" for="file">Select a file to upload</label>
+				<input class = "actual" type="file" name="file" id="file" onchange="CopyMe(this, 'txtFileName');">
+			</div>
+			<div class="large-3 columns">
+				<br />
+				<input id="txtFileName" type="text" readonly="readonly" />
 			</div>
 			<div class = "large-2 columns">
 			<br />
@@ -133,7 +138,7 @@
 			}
 		}
 		else{
-			    echo "<div id='confirmation'><p>Invalid file</p></div>";
+			    // echo "<div id='confirmation'><p>Invalid file</p></div>";
 
 		}
 	}
@@ -148,12 +153,12 @@
 				<br />
 				<br /> -->
 				<div class="row">
-					<div class="large-5 columns">
+					<div class="large-4 columns">
 						<div class="large-6 columns">
 						     <input class="text" name="new" type="text" placeholder="Folder name">
 						</div>
 						<div class="large-6 columns">
-						     <input class="text" name="whisper" type="password" placeholder="Password">
+						     <input class="text" name="whisper" type="password" placeholder="Folder password">
 						</div>
 					</div>
 				</div>
@@ -168,7 +173,7 @@
 
 </form>
 </div>
-</div>
+<!-- </div> -->
 
 <!-- <hr /> -->
 

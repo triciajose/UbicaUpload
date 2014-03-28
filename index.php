@@ -19,74 +19,40 @@
       $(document).foundation();
 
     </script>
-     <div id="topbar">
-    <img src="http://www.magic.ubc.ca/wiki/pub/skins/magic.png" />
-    </div>
-    
-   
+
         <br/>
     <br />
     <br />
     <br />
-    <h2> UbiCA One-Way DropBox </h2>
     <div class="row">
-    <?php 
-      $error = $_GET['error'];
-      if ($error == 'yes') {
-    ?>
-    <script type="text/javascript">
-      $('#error').css("display", "inline");
-    </script> 
-    <?php } 
-      if ($error == 'old') {
-    ?>
-    <script type="text/javascript">
-      $('#old').css("display", "inline");
-    </script> 
-    <?php }  ?>
-
-    <div data-alert id="error" class="alert-box warning" style="display:none">
-      Either your email or password is incorrect 
-    </div>
-    <div data-alert id="old" class="alert-box warning" style="display:none">
-      There is someone already registered with that email or password 
-    </div>
-    <div class="large-5 columns panel">
+    
       <div id="login">
-        <h3> Login </h3>
         <form action="home.php" method="post" enctype="multipart/form-data">
           <br/>
+            <a href="index.html"><img src="newlogo.gif" />  </a>  
+            <br />
+            <br />
 <!--           <div class="row">
                 <input type="text" name="username" placeholder="Email address" />
           </div> -->
           <div class="row">
-                <input type="password" name="password" placeholder="Password" />
+            <?php
+              if ($_GET['error'] == 'yes') {
+                echo "<div data-alert id='error' class='alert-box warning'>
+                Your passkey is incorrect. <a href='new.php'>Create a new account?</a></div>";
+              }
+            ?> 
+            <input type="password" name="password" placeholder="Passkey" />
           </div>
+          <br />
           <div class="row">
-            <input type="submit" class="button center [radius round]" name="submit" value="Login">
+          <br />
+            <input type="submit" class="choose" name="submit" value="Go!">
+            or <a href="new.php">      Register a new account</a>
+
           </div>
         </form>
-        
-      </div>
-      </div>
-      <div class="large-5 columns callout panel">
-      <div id="register">
-        <h3> Register </h3>
-        <form action="register.php" method="post" enctype="multipart/form-data">
-          <br/>
-          <div class="row">
-                <input type="text" name="username" placeholder="Email address" />
-          </div>
-          <div class="row">
-                <input type="password" name="password" placeholder="Password" />
-          </div>
-          <div class="row">
-            <input type="submit" class="button center [radius round]" name="register" value="Register">
-          </div>
-        </form>
-        
-      </div>
-      </div>
+        </div>
 
     </div>
 

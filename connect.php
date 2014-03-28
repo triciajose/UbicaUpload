@@ -1,5 +1,12 @@
 <?php
-	$mysqli = new mysqli("localhost","root","password","ubica");
+
+	$host = "localhost";
+	$user = "root";
+	$pass = "password";
+	$directory = "ubica";
+
+	$mysqli = new mysqli($host, $user, $pass, $directory);
+
 	$current = "SELECT folder FROM folders";
 	$result = mysqli_query($mysqli,$current);
 	while($row=mysqli_fetch_row($result)) {

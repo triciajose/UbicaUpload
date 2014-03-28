@@ -34,7 +34,7 @@
     		
     	}
     	else {
-    		header("Location: index.php?error=old");
+    		header("Location: index.html?error=old");
     	}
     mysqli_free_result($result);
 	$mysqli->close();
