@@ -12,7 +12,6 @@
 	while($row=mysqli_fetch_row($result)) {
 		$array = array();
 		$now = $row[0];
-		$data = array();
 		$current = "SELECT Name,Version, DateModified FROM files WHERE folder = '$now'";
 		// die($current);
 		$internal = mysqli_query($mysqli,$current);
