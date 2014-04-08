@@ -195,15 +195,23 @@
 	echo "<table border='1'>
 	<tr>
 	<th>Folder</th>
+	<th>Folder Password</th>
 	<th>Name</th>
 	<th>Version</th>
 	<th>Date Modified</th>
 	</tr>";
 
+
 	$i = 0;
 	while($files[$i]) {
+		$name = $files[$i]['folder'];
+		$select = "SELECT * from folders WHERE folder='$name'";
+		$return = mysqli_query($mysqli, $select);
+		$row = mysqli_fetch_row($return);
+		$key = $row[1];
 		  echo "<tr>";
-		  echo "<td>" . $files[$i]['folder'] . "</td>";
+		  echo "<td>" . $name . "</td>";
+		  echo "<td>" . $key . "</td>";
 		  echo "<td>" . $files[$i]['Name'] . "</td>";
 		  echo "<td>" . $files[$i]['Version'] . "</td>";
 		  echo "<td>" . $files[$i]['DateModified'] . "</td>";
