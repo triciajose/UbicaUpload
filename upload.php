@@ -32,7 +32,7 @@
   <section class="top-bar-section">
     <!-- Right Nav Section -->
     <ul class="left">
-      <li style = "max-width:1200px; height:45px"><a href="upload.php"><img src="newlogo.gif"></a></li>
+      <li style = "max-width:1200px; height:45px"><a href="upload.php?uid= <?php echo $_GET['uid']; ?>"><img src="newlogo.gif"></a></li>
     </ul>
     <ul class="right">
       <li><a href="index.html">Logout</a></li>
@@ -45,7 +45,7 @@
 <!-- <div class="row"> -->
 <div id="form">
 	<div class="row">
-		<form action="upload.php?uid= <?php echo $_GET['uid']; ?>" method="post" enctype="multipart/form-data">
+		<form  method="post" enctype="multipart/form-data">
 			<div class="large-4 columns">
 			<label for="where">Upload to</label>
 			<select name ="folders" id="folders" onchange="Report(this.value)">
@@ -191,9 +191,9 @@
 		while($row = mysqli_fetch_array($return2)) {
 				$files[] = $row;
 		}
-	}
-	echo "<table border='1'>
-	<tr>
+	}echo "<form action ='delete.php?uid=" .  $_GET['uid'] . "' method='post'><table border='1'>
+	<tr> 
+	<th> </th>
 	<th>Folder</th>
 	<th>Folder Password</th>
 	<th>Name</th>
@@ -210,6 +210,7 @@
 		$row = mysqli_fetch_row($return);
 		$key = $row[1];
 		  echo "<tr>";
+		  echo "<td> <input type='checkbox' name='what' value='" . $files[$i]['Name'] ."'></td>";
 		  echo "<td>" . $name . "</td>";
 		  echo "<td>" . $key . "</td>";
 		  echo "<td>" . $files[$i]['Name'] . "</td>";
@@ -218,7 +219,9 @@
 		  echo "</tr>";
 		  $i += 1;	
 	}
-	echo "</table>";
+	echo "</table><input class= 'choose right' type='submit' name='delete' value='Delete'>
+	</form>";
+
 
 ?>
 
