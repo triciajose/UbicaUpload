@@ -2,7 +2,7 @@
 <html>
 <head>
 	<meta charset="utf-8" />
-	    <title>Docshare</title>
+	    <title>UbiCADocshare</title>
 	    <link rel="stylesheet" type="css" href="upload.css">
 	    <link rel="stylesheet" type="css" href="foundation-5.2.1/css/foundation.css">
       	<link rel="stylesheet" type="css" href="foundation-5.2.1/css/normalize.css">
@@ -26,6 +26,9 @@
 
 	$mysqli = new mysqli($host, $user, $pass, $directory);
 
+	if (empty($_GET['uid'])) {
+		die('Access denied');
+	}
 ?>
 
 <nav class="top-bar" data-topbar>
@@ -90,56 +93,66 @@
 	    exit();
 	}
     if(isset($_POST)) {
-    	$allowedExts = array("pdf");
-		$temp = explode(".", $_FILES["file"]["name"]);
-		$extension = end($temp);
-		if ($_FILES["file"]["type"] == "application/pdf") {
-			if ($_FILES["file"]["error"] > 0) {
-			    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
-			    }
-			else {
-				$folder = $_POST["folders"];
-				if ($folder == 'New Folder') {
-					$newpass = $mysqli->real_escape_string($_POST["whisper"]);
-					$folder = $mysqli->real_escape_string($_POST["new"]);
 
-					// $create = "CREATE TABLE $folder (
-					// 	Name VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY,
-					// 	Version INT(11) NOT NULL DEFAULT 0,
-					// 	DateModified timestamp DEFAULT CURRENT_TIMESTAMP)";
-						
-					// mysqli_query($mysqli,$create);
-
-					$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
-					mysqli_query($mysqli, $insert);
-				}
-				$folder = $mysqli->real_escape_string($folder);
-				$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
-				if (!file_exists($folder)) {
-				    mkdir($folder);
-				}
-
-				move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
-
-				$current = "SELECT Version FROM files WHERE Name='$name' AND folder='$folder'";
-				$result = mysqli_query($mysqli,$current);
-				$row = mysqli_fetch_row($result);
-				if (mysqli_num_rows($result) != 0) {
-					$version = $row[0] + 1;
-	      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name' AND folder='$folder'";
-	      			mysqli_query($mysqli,$sql);
-	      			mysqli_free_result($result);
-				}
+    	if ($_POST["folders"] == '--Select a folder--') {
+    		echo '<script language="javascript">';
+			echo 'alert("Please select or add a folder")';
+			echo '</script>';
+    	}
+    	else {
+	    	$allowedExts = array("pdf");
+			$temp = explode(".", $_FILES["file"]["name"]);
+			$extension = end($temp);
+			if ($_FILES["file"]["type"] == "application/pdf") {
+				if ($_FILES["file"]["error"] > 0) {
+				    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
+				    }
 				else {
-					$sql="INSERT INTO files (folder, Name, Version, DateModified) VALUES ('$folder','$name', '0', CURRENT_TIMESTAMP)";
-					mysqli_query($mysqli,$sql);
-				}
-	      		echo "<div id='confirmation'><p>Upload complete</p></div>";
-			}
-		}
-		else{
-			    // echo "<div id='confirmation'><p>Invalid file</p></div>";
+					$folder = $_POST["folders"];
+					if ($folder == 'New Folder') {
+						$newpass = $mysqli->real_escape_string($_POST["whisper"]);
+						$folder = $mysqli->real_escape_string($_POST["new"]);
 
+						// $create = "CREATE TABLE $folder (
+						// 	Name VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY,
+						// 	Version INT(11) NOT NULL DEFAULT 0,
+						// 	DateModified timestamp DEFAULT CURRENT_TIMESTAMP)";
+							
+						// mysqli_query($mysqli,$create);
+
+						$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
+						mysqli_query($mysqli, $insert);
+					}
+					$folder = $mysqli->real_escape_string($folder);
+					$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
+					if (!file_exists($folder)) {
+					    mkdir($folder);
+					}
+
+					move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
+
+					$current = "SELECT Version FROM files WHERE Name='$name' AND folder='$folder'";
+					$result = mysqli_query($mysqli,$current);
+					$row = mysqli_fetch_row($result);
+					if (mysqli_num_rows($result) != 0) {
+						$version = $row[0] + 1;
+		      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name' AND folder='$folder'";
+		      			mysqli_query($mysqli,$sql);
+		      			mysqli_free_result($result);
+					}
+					else {
+						$sql="INSERT INTO files (folder, Name, Version, DateModified) VALUES ('$folder','$name', '0', CURRENT_TIMESTAMP)";
+						mysqli_query($mysqli,$sql);
+					}
+		      		echo "<div id='confirmation'><p>Upload complete</p></div>";
+				}
+			}
+			else{
+				echo '<script language="javascript">';
+				echo 'alert("Invalid file type")';
+				echo '</script>';
+
+			}
 		}
 	}
 
@@ -155,10 +168,10 @@
 				<div class="row">
 					<div class="large-4 columns">
 						<div class="large-6 columns">
-						     <input class="text" name="new" type="text" placeholder="Folder name">
+						     <input class="text" name="new" type="text" autocomplete="off" placeholder="Folder name">
 						</div>
 						<div class="large-6 columns">
-						     <input class="text" name="whisper" type="password" placeholder="Folder password">
+						     <input class="text" name="whisper" type="password" autocomplete="off" placeholder="Folder password">
 						</div>
 					</div>
 				</div>
@@ -192,13 +205,13 @@
 				$files[] = $row;
 		}
 	}echo "<form action ='delete.php?uid=" .  $_GET['uid'] . "' method='post'><table border='1'>
-	<tr> 
-	<th> </th>
+	<tr> 	
 	<th>Folder</th>
 	<th>Folder Password</th>
 	<th>Name</th>
 	<th>Version</th>
 	<th>Date Modified</th>
+	<th> </th>
 	</tr>";
 
 
@@ -209,13 +222,13 @@
 		$return = mysqli_query($mysqli, $select);
 		$row = mysqli_fetch_row($return);
 		$key = $row[1];
-		  echo "<tr>";
-		  echo "<td> <input type='checkbox' name='what' value='" . $files[$i]['Name'] ."'></td>";
+		  echo "<tr>";		  
 		  echo "<td>" . $name . "</td>";
 		  echo "<td>" . $key . "</td>";
-		  echo "<td>" . $files[$i]['Name'] . "</td>";
+		  echo '<td><a href="http://142.103.25.29/UbicaUpload/' . $name . '/' . $files[$i]['Name'] . '" >' . $files[$i]['Name'] . '</a></td>';
 		  echo "<td>" . $files[$i]['Version'] . "</td>";
 		  echo "<td>" . $files[$i]['DateModified'] . "</td>";
+		  echo "<td> <input type='radio' name='what' value='" . $files[$i]['Name'] ."'></td>";
 		  echo "</tr>";
 		  $i += 1;	
 	}
