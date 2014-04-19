@@ -27,7 +27,7 @@
 	$mysqli = new mysqli($host, $user, $pass, $directory);
 
 	if (empty($_GET['uid'])) {
-		die('Access denied');
+		header("Location: index.html");
 	}
 ?>
 
@@ -93,7 +93,6 @@
 	    exit();
 	}
     if(isset($_POST)) {
-
     	if ($_POST["folders"] == '--Select a folder--') {
     		echo '<script language="javascript">';
 			echo 'alert("Please select or add a folder")';
