@@ -147,9 +147,9 @@
 				}
 			}
 			else{
-				echo '<script language="javascript">';
-				echo 'alert("Invalid file type")';
-				echo '</script>';
+				// echo '<script language="javascript">';
+				// echo 'alert("Invalid file type")';
+				// echo '</script>';
 
 			}
 		}
