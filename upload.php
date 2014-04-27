@@ -112,38 +112,54 @@
 						$newpass = $mysqli->real_escape_string($_POST["whisper"]);
 						$folder = $mysqli->real_escape_string($_POST["new"]);
 
-						// $create = "CREATE TABLE $folder (
-						// 	Name VARCHAR(255) NOT NULL UNIQUE PRIMARY KEY,
-						// 	Version INT(11) NOT NULL DEFAULT 0,
-						// 	DateModified timestamp DEFAULT CURRENT_TIMESTAMP)";
-							
-						// mysqli_query($mysqli,$create);
+						$check = "SELECT folder from folders WHERE key1='$newpass'";
+						$return = mysqli_query($mysqli, $check);
+						$row = mysqli_fetch_row($return);
+						if (mysqli_num_rows($return) != 0) {
+							$error = 1;
+							echo '<script language="javascript">';
+							echo 'alert("Please select a different folder password")';
+							echo '</script>';
+						}
+						
+						$check = "SELECT folder from folders WHERE folder='$folder'";
+						$return = mysqli_query($mysqli, $check);
+						$row = mysqli_fetch_row($return);
+						if (mysqli_num_rows($return) == 0) {
+							$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
+							mysqli_query($mysqli, $insert);
+						}
+						else {
+							$error = 1;
+							echo '<script language="javascript">';
+							echo 'alert("Please select a different folder name")';
+							echo '</script>';
+						}
+					}
+					if ($error !=1 ) {
+						$folder = $mysqli->real_escape_string($folder);
+						$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
+						if (!file_exists($folder)) {
+						    mkdir($folder);
+						}
 
-						$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
-						mysqli_query($mysqli, $insert);
-					}
-					$folder = $mysqli->real_escape_string($folder);
-					$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
-					if (!file_exists($folder)) {
-					    mkdir($folder);
-					}
+						move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
 
-					move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
-
-					$current = "SELECT Version FROM files WHERE Name='$name' AND folder='$folder'";
-					$result = mysqli_query($mysqli,$current);
-					$row = mysqli_fetch_row($result);
-					if (mysqli_num_rows($result) != 0) {
-						$version = $row[0] + 1;
-		      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name' AND folder='$folder'";
-		      			mysqli_query($mysqli,$sql);
-		      			mysqli_free_result($result);
-					}
-					else {
-						$sql="INSERT INTO files (folder, Name, Version, DateModified) VALUES ('$folder','$name', '0', CURRENT_TIMESTAMP)";
-						mysqli_query($mysqli,$sql);
-					}
-		      		echo "<div id='confirmation'><p>Upload complete</p></div>";
+						$current = "SELECT Version FROM files WHERE Name='$name' AND folder='$folder'";
+						$result = mysqli_query($mysqli,$current);
+						$row = mysqli_fetch_row($result);
+						if (mysqli_num_rows($result) != 0) {
+							$version = $row[0] + 1;
+			      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name' AND folder='$folder'";
+			      			mysqli_query($mysqli,$sql);
+			      			mysqli_free_result($result);
+						}
+						else {
+							$sql="INSERT INTO files (folder, Name, Version, DateModified) VALUES ('$folder','$name', '0', CURRENT_TIMESTAMP)";
+							mysqli_query($mysqli,$sql);
+						}
+			      		echo "<div id='confirmation'><p>Upload complete</p></div>";
+		      		}
 				}
 			}
 			else{
