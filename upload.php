@@ -50,27 +50,50 @@
 	<div class="row">
 		<form  method="post" enctype="multipart/form-data">
 			<div class="large-4 columns">
-			<label for="where">Upload to</label>
-			<select name ="folders" id="folders" onchange="Report(this.value)">
-				<option default>--Select a folder--</option>
-				<?php
+				<div class = "row">
+					<label for="where">Upload to</label>
+					<select name ="folders" id="folders" onchange="Report(this.value)">
+						<option default>--Select a folder--</option>
+						<?php
 
-					$mysqli = new mysqli($host, $user, $pass, $directory);
-					$uid = $_GET['uid'];
-				    $current = "SELECT folder FROM folders WHERE uid='$uid'";
-				   	$result = mysqli_query($mysqli,$current);
+							$mysqli = new mysqli($host, $user, $pass, $directory);
+							$uid = $_GET['uid'];
+						    $current = "SELECT folder FROM folders WHERE uid='$uid'";
+						   	$result = mysqli_query($mysqli,$current);
 
-					while ($row = mysqli_fetch_row($result)){
-				?>
-				    <option value="<?php echo $row[0]; ?>">
-				    <?php echo $row[0];         ?>     
-				    </option>
-				<?php    
-				}
-				// echo "</select>";
-				?>
-				<option value="New Folder"> New Folder </option>
-			</select>
+							while ($row = mysqli_fetch_row($result)){
+						?>
+						    <option value="<?php echo $row[0]; ?>">
+						    <?php echo $row[0];         ?>     
+						    </option>
+						<?php    
+						}
+						// echo "</select>";
+						?>
+						<option value="New Folder"> New Folder </option>
+					</select>
+				</div>
+				<div class="row">
+					<div id="hidden" style="display:none">
+						<br />
+					
+						<div class="row">
+							<div class="large-10 columns">
+								<div class="large-6 columns">
+								     <input class="text" name="new" type="text" autocomplete="off" placeholder="Folder name">
+								</div>
+								<div class="large-6 columns">
+								     <input class="text" name="whisper" type="password" autocomplete="off" placeholder="Folder password">
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							
+						</div>
+					</div>
+
+				</div>
+
 			</div>
 			<div class="large-3 columns">
 				<br />
@@ -175,27 +198,7 @@
 ?>
 			</div>
 	</div>
-	<div class="row">
-			<div id="hidden" style="display:none">
-<!-- 				<br />
-				<br />
-				<br /> -->
-				<div class="row">
-					<div class="large-4 columns">
-						<div class="large-6 columns">
-						     <input class="text" name="new" type="text" autocomplete="off" placeholder="Folder name">
-						</div>
-						<div class="large-6 columns">
-						     <input class="text" name="whisper" type="password" autocomplete="off" placeholder="Folder password">
-						</div>
-					</div>
-				</div>
-				<div class="row">
-					
-				</div>
-			</div>
-
-	</div>
+	<!-- HIDDEN -->
 </div>
 	<br />
 
@@ -204,6 +207,7 @@
 <!-- </div> -->
 
 <!-- <hr /> -->
+<div style= "position:relative">
 
 <?php
 	$select = "SELECT folder from folders WHERE uid='$uid'";
@@ -252,6 +256,6 @@
 
 
 ?>
-
+</div>
 </body>
 </html>

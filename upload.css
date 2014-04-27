@@ -141,6 +141,7 @@ a:hover {
 
 .text {
 	padding:10px 10px;
+	font-size: 60% !important;
 }
 
 .sticky {  
