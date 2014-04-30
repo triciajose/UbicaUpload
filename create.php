@@ -1,5 +1,5 @@
 <?php 
-
+	// script to create mysql table structure
 	$host = "localhost";
 	$user = "dawood";
 	$pass = "1234dawood";

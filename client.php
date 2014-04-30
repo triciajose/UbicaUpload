@@ -26,6 +26,7 @@
     <br />
     <div class="row">
     
+    <!-- FORM -->
       <div id="login">
         <form action="clienthome.php" method="post" enctype="multipart/form-data">
           <br/>
@@ -33,7 +34,7 @@
             <br />
             <br />
           <div class="row">
-
+            <!-- folder password field -->
             <input type="password" name="password" placeholder="Folder password" />
             <input type="submit" class="choose" name="submit" value="Go!">
           </div>

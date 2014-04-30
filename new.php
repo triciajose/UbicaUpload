@@ -31,14 +31,18 @@
     <br />
     <h2> Register </h2>
     <div class="row">
-    <div data-alert id="error"class="alert-box warning" style="display:none">
-      Either your email or password is incorrect 
-    </div>
       <div id="login">
-        <!-- <h3> Register </h3> -->
+        <!-- FORM TO CREATE A NEW USER-->
         <form action="register.php" method="post" enctype="multipart/form-data">
           <br/>
           <div class="row">
+              <!-- error messaging -->
+              <?php
+                  if ($_GET['error'] == 'old') {
+                    echo "<div data-alert id='error' class='alert-box warning'>
+                    Someone is already registered with that email address and/or password. <a href='new.php'>Create a new account?</a></div>";
+                  }
+                ?> 
                 <input type="text" name="username" placeholder="Email address" />
           </div>
           <div class="row">
@@ -53,11 +57,5 @@
 
     </div>
 
-    <div id="create_user" class="reveal-modal" data-reveal>
-      <h2>Awesome. I have it.</h2>
-      <p class="lead">Your couch.  It is mine.</p>
-      <p>Im a cool paragraph that lives inside of an even cooler modal. Wins</p>
-      <a class="close-reveal-modal">&#215;</a>
-    </div>
 </body>
 </html>

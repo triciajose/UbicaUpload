@@ -19,11 +19,13 @@
   <script src="foundation-5.2.1/js/foundation.min.js"></script>
 
 <?php
+	// mysql credentials
 	$host = "localhost";
 	$user = "root";
 	$pass = "password";
 	$directory = "ubica";
 
+	// connect to mysql
 	$mysqli = new mysqli($host, $user, $pass, $directory);
 ?>
 
@@ -41,11 +43,14 @@
 
 
 <?php
+
 	$password = $mysqli->real_escape_string($_POST["password"]);
 
+	// fetch folder associated with input password
 	$select = "SELECT folder from folders WHERE key1='$password'";
 	$return = mysqli_query($mysqli, $select);
 
+	// fetch database entries corresponding to folder 
 	while ($row1 = mysqli_fetch_row($return)) {
 		$folder = $row1[0];
 
@@ -63,7 +68,7 @@
 	<th>Date Modified</th>
 	</tr>";
 
-
+	// display results in table
 	$i = 0;
 	while($files[$i]) {
 		$name = $files[$i]['folder'];

@@ -19,21 +19,24 @@
   <script src="foundation-5.2.1/js/foundation.min.js"></script>
 
 <?php
+	// mysql credentials
 	$host = "localhost";
 	$user = "root";
 	$pass = "password";
 	$directory = "ubica";
 
+	// connect to mysql
 	$mysqli = new mysqli($host, $user, $pass, $directory);
 
+	// if no uid is set, redirect to login page
 	if (empty($_GET['uid'])) {
 		header("Location: index.html");
 	}
 ?>
 
+<!-- TOP BAR NAVIGATION -->
 <nav class="top-bar" data-topbar>
   <section class="top-bar-section">
-    <!-- Right Nav Section -->
     <ul class="left">
       <li style = "max-width:1200px; height:45px"><a href="upload.php?uid= <?php echo $_GET['uid']; ?>"><img src="newlogo.gif"></a></li>
     </ul>
@@ -45,17 +48,19 @@
 
 <br />
 <br />
-<!-- <div class="row"> -->
+<!-- FORM -->
 <div id="form">
 	<div class="row">
 		<form  method="post" enctype="multipart/form-data">
 			<div class="large-4 columns">
 				<div class = "row">
+				<!-- FOLDER FIELD -->
 					<label for="where">Upload to</label>
 					<select name ="folders" id="folders" onchange="Report(this.value)">
 						<option default>--Select a folder--</option>
 						<?php
 
+							// display folders corresponding to uid
 							$mysqli = new mysqli($host, $user, $pass, $directory);
 							$uid = $_GET['uid'];
 						    $current = "SELECT folder FROM folders WHERE uid='$uid'";
@@ -70,10 +75,12 @@
 						}
 						// echo "</select>";
 						?>
+						<!-- option to create a new folder -->
 						<option value="New Folder"> New Folder </option>
 					</select>
 				</div>
 				<div class="row">
+				<!-- NEW FOLDER FIELDS (HIDDEN) -->
 					<div id="hidden" style="display:none">
 						<br />
 					
@@ -97,7 +104,7 @@
 			</div>
 			<div class="large-3 columns">
 				<br />
-				<!-- <input type="file" name="file" id="file"> -->
+				<!-- SELECT FILE FIELD -->
 				<label class="choose" id="labelfile" for="file">Select a file to upload</label>
 				<input class = "actual" type="file" name="file" id="file" onchange="CopyMe(this, 'txtFileName');">
 			</div>
@@ -107,14 +114,14 @@
 			</div>
 			<div class = "large-2 columns">
 			<br />
-			<!-- <br />
-			<br /> -->
+			<!-- UPLOAD BUTTON -->
 			<input class= "uploadb" type="submit" name="submit" value="Upload" onclick="Submit();">
 <?php
 	if ($mysqli->connect_errno) {
 	    printf("Connect failed: %s\n", $mysqli->connect_error);
 	    exit();
 	}
+	// error messaging
     if(isset($_POST)) {
     	if ($_POST["folders"] == '--Select a folder--') {
     		echo '<script language="javascript">';
@@ -122,6 +129,7 @@
 			echo '</script>';
     	}
     	else {
+    		// check extension is pdf
 	    	$allowedExts = array("pdf");
 			$temp = explode(".", $_FILES["file"]["name"]);
 			$extension = end($temp);
@@ -130,11 +138,13 @@
 				    echo "Return Code: " . $_FILES["file"]["error"] . "<br>";
 				    }
 				else {
+					// new folders
 					$folder = $_POST["folders"];
 					if ($folder == 'New Folder') {
 						$newpass = $mysqli->real_escape_string($_POST["whisper"]);
 						$folder = $mysqli->real_escape_string($_POST["new"]);
 
+						// make sure no duplicate passwords
 						$check = "SELECT folder from folders WHERE key1='$newpass'";
 						$return = mysqli_query($mysqli, $check);
 						$row = mysqli_fetch_row($return);
@@ -145,10 +155,12 @@
 							echo '</script>';
 						}
 						
+						// make sure no duplicate folders
 						$check = "SELECT folder from folders WHERE folder='$folder'";
 						$return = mysqli_query($mysqli, $check);
 						$row = mysqli_fetch_row($return);
 						if (mysqli_num_rows($return) == 0) {
+							// if not, create new folder
 							$insert= "INSERT INTO folders VALUES ('$uid', '$newpass', '$folder')";
 							mysqli_query($mysqli, $insert);
 						}
@@ -159,28 +171,33 @@
 							echo '</script>';
 						}
 					}
+					// if no errors
 					if ($error !=1 ) {
 						$folder = $mysqli->real_escape_string($folder);
 						$name = $mysqli->real_escape_string($_FILES["file"]["name"]);
+						// make new folder it doesnt exist
 						if (!file_exists($folder)) {
 						    mkdir($folder);
 						}
-
+						// put uploaded file into folder on server
 						move_uploaded_file($_FILES["file"]["tmp_name"], $folder . "/". $name);
 
 						$current = "SELECT Version FROM files WHERE Name='$name' AND folder='$folder'";
 						$result = mysqli_query($mysqli,$current);
 						$row = mysqli_fetch_row($result);
+						// if updating file, increment version
 						if (mysqli_num_rows($result) != 0) {
 							$version = $row[0] + 1;
 			      			$sql = "UPDATE Files SET Version ='$version', DateModified =CURRENT_TIMESTAMP WHERE Name='$name' AND folder='$folder'";
 			      			mysqli_query($mysqli,$sql);
 			      			mysqli_free_result($result);
 						}
+						// if new file, create new table entry
 						else {
 							$sql="INSERT INTO files (folder, Name, Version, DateModified) VALUES ('$folder','$name', '0', CURRENT_TIMESTAMP)";
 							mysqli_query($mysqli,$sql);
 						}
+						// display confirmation
 			      		echo "<div id='confirmation'><p>Upload complete</p></div>";
 		      		}
 				}
@@ -198,7 +215,6 @@
 ?>
 			</div>
 	</div>
-	<!-- HIDDEN -->
 </div>
 	<br />
 
@@ -210,9 +226,11 @@
 <div style= "position:relative">
 
 <?php
+	// fetch folders associated with uid
 	$select = "SELECT folder from folders WHERE uid='$uid'";
 	$return = mysqli_query($mysqli, $select);
 
+	// fetch contents of folders
 	while ($row1 = mysqli_fetch_row($return)) {
 		$folder = $row1[0];
 
@@ -233,7 +251,7 @@
 	<th> </th>
 	</tr>";
 
-
+	// display content in table
 	$i = 0;
 	while($files[$i]) {
 		$name = $files[$i]['folder'];
